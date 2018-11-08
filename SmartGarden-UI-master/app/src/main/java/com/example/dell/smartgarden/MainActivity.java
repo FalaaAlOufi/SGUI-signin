@@ -2,6 +2,7 @@ package com.example.dell.smartgarden;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,26 +11,30 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+
 
 public class MainActivity extends AppCompatActivity  implements BottomNavigationView.OnNavigationItemSelectedListener {
 
+    private MqttAndroidClient client;
+    private String TAG = "MainActivity";
+    private PahoMqttClient pahoMqttClient;
     private Toolbar toolbar;
 
     FirebaseAuth auth;
     FirebaseUser user;
     ProgressDialog PD;
-
-   // private static final String TAG = "EmailPassword";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +43,6 @@ public class MainActivity extends AppCompatActivity  implements BottomNavigation
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-
 
         PD = new ProgressDialog(this);
         PD.setMessage("Loading...");
@@ -55,16 +59,33 @@ public class MainActivity extends AppCompatActivity  implements BottomNavigation
         toolbar.setTitle("Home");
         setSupportActionBar(toolbar);
 
-        //getting bottom navigation view and attaching the listener
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
     }
 
+
     @Override
+    protected void onStart() {
+        super.onStart();
+        pahoMqttClient = new PahoMqttClient();
+        client = pahoMqttClient.getMqttClient(getApplicationContext(), Constants.MQTT_BROKER_URL, Constants.CLIENT_ID);
+        client.setTraceEnabled(true);
+
+
+        Intent intent = new Intent(MainActivity.this, MqttMessageService.class);
+        ContextCompat.startForegroundService(MainActivity.this, intent  );
+        startService(intent);
+
+    }
+
+
+
+        @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Fragment fragment = null;
 
         switch (item.getItemId()) {
+
             case R.id.navigation_home:
                 fragment = new HomeFragment();
                 toolbar.setTitle("Home");
@@ -95,6 +116,12 @@ public class MainActivity extends AppCompatActivity  implements BottomNavigation
         }
         return false;
     }
+
+
+
+
 }
 
-//Top tabs
+
+
+

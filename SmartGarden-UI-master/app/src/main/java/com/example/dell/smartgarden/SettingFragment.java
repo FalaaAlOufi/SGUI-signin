@@ -38,22 +38,22 @@ public class SettingFragment extends Fragment {
 
         btnSignOut = (Button) getActivity().findViewById(R.id.sign_out_button);
         btnSignOut.setOnClickListener(new View.OnClickListener() {
-           @Override
-          public void onClick(View v) {
-               try {
-                   auth.signOut();
-                   Toast.makeText(getActivity(), "User Sign out!", Toast.LENGTH_LONG).show();
-                   Intent intent = new Intent(getActivity(), LoginActivity.class);
-                   startActivity(intent);
-               } catch (Exception e) {
-                   Log.e(TAG, "onClick: Exception " + e.getMessage(), e);
-               }
+            @Override
+            public void onClick(View v) {
+                try {
+                    auth.signOut();
+                    Toast.makeText(getActivity(), "User Sign out!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    Log.e(TAG, "onClick: Exception " + e.getMessage(), e);
+                }
             }
         });
 
-    //protected void onCreate(Bundle savedInstanceState) {
+        //protected void onCreate(Bundle savedInstanceState) {
         //  super.onCreateView(savedInstanceState);
-     //  setContentView(R.layout.fragment_setting);
+        //  setContentView(R.layout.fragment_setting);
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
@@ -63,39 +63,39 @@ public class SettingFragment extends Fragment {
         PD.setCancelable(true);
         PD.setCanceledOnTouchOutside(false);
 
-     //   btnSignOut = (Button) getActivity().findViewById(R.id.sign_out_button);
+        //   btnSignOut = (Button) getActivity().findViewById(R.id.sign_out_button);
 
-    //    btnSignOut.setOnClickListener(new View.OnClickListener() {
-    //        @Override
-     //       public void onClick(View view) {
-     //           try {
-      //              auth.signOut();
-       //             Toast.makeText(getActivity(), "User Sign out!", Toast.LENGTH_LONG).show();
+        //    btnSignOut.setOnClickListener(new View.OnClickListener() {
+        //        @Override
+        //       public void onClick(View view) {
+        //           try {
+        //              auth.signOut();
+        //             Toast.makeText(getActivity(), "User Sign out!", Toast.LENGTH_LONG).show();
         //            Intent intent = new Intent(getActivity(), LoginActivity.class);
         //            startActivity(intent);
         //        } catch (Exception e) {
-         //           Log.e(TAG, "onClick: Exception " + e.getMessage(), e);
-         //       }
+        //           Log.e(TAG, "onClick: Exception " + e.getMessage(), e);
+        //       }
 
-                //  auth.signOut();
-                //  FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
-                //     @Override
-                //     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                //        FirebaseUser user = firebaseAuth.getCurrentUser();
-                //        if ( user == null) {
-                //   startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                //         finish();
-                //  finishAffinity();
-                //     }
-                //    }
-                //  };
-                //  auth.addAuthStateListener(authListener);
-                //  Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                //  startActivity(intent);
-         //   }
-      //  });
+        //  auth.signOut();
+        //  FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
+        //     @Override
+        //     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        //        FirebaseUser user = firebaseAuth.getCurrentUser();
+        //        if ( user == null) {
+        //   startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        //         finish();
+        //  finishAffinity();
+        //     }
+        //    }
+        //  };
+        //  auth.addAuthStateListener(authListener);
+        //  Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        //  startActivity(intent);
+        //   }
+        //  });
         //getActivity().findViewById(R.id.change_password_button).setOnClickListener(new View.OnClickListener() {}
-                getActivity().findViewById(R.id.change_password_button).setOnClickListener(new View.OnClickListener() {
+        getActivity().findViewById(R.id.change_password_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), ForgetAndChangePasswordActivity.class).putExtra("Mode", 1));
@@ -121,7 +121,7 @@ public class SettingFragment extends Fragment {
     public void onResume() {
         if (auth.getCurrentUser() == null) {
             startActivity(new Intent(getActivity(), LoginActivity.class));
-          //  finish();
+            //  finish();
         }
         super.onResume();
     }
